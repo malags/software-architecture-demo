@@ -1,0 +1,23 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package =  "ch.usi.sa";
+package CalculatorPackage;
+
+message MyNumber {
+  int32 number = 1;
+}
+
+message MyNumbers {
+  //array
+  repeated MyNumber numbers = 1;
+}
+
+message Nothing{}
+
+service CalculatorService {
+  rpc add(MyNumbers) returns (MyNumber);
+
+  rpc fibonacci(Nothing) returns (stream MyNumber);
+
+  rpc greeting(Nothing) returns (Nothing);
+}

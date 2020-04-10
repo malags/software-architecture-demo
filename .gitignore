@@ -10,6 +10,13 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+.DS_Store
+.idea/
+grpc-client/node_modules/
+grpc-demo/lib/
+grpc-demo/target/
+
+
 # Package Files #
 *.jar
 *.war
