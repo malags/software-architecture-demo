@@ -19,7 +19,8 @@ service CalculatorService {
 
   rpc fibonacci(Nothing) returns (stream MyNumber);
 
-  rpc fibonacciServerCrash(Nothing) returns (stream MyNumber);
+  rpc waitSomeTime(Nothing) returns (Nothing);
 
-  rpc greeting(Nothing) returns (Nothing);
+  //add
+  rpc fibonacciServerCrash(Nothing) returns (stream MyNumber);
 }

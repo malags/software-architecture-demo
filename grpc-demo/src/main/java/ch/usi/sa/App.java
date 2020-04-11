@@ -2,6 +2,7 @@ package ch.usi.sa;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.protobuf.services.ProtoReflectionService;
 
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ public class App
         Server server = ServerBuilder
                 .forPort(8080)
                 .addService(new CalculatorServiceImpl())
+                .addService(ProtoReflectionService.newInstance())   //enable ServerReflection
                 .build();
 
         try {

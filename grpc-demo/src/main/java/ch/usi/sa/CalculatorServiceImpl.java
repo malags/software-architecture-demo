@@ -1,5 +1,7 @@
 package ch.usi.sa;
 
+import com.google.longrunning.WaitOperationRequest;
+import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServi
     public void fibonacci(Nothing request, StreamObserver<MyNumber> responseObserver) {
         Fibonacci fib = new Fibonacci();
         System.out.println("called fibonacci");
-        for (int i = 0 ; i < 100 ; ++i){
+        for (int i = 0 ; i < 10 ; ++i){
             responseObserver.onNext(
                     MyNumber
                             .newBuilder()
@@ -36,12 +38,30 @@ public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServi
             );
         }
         responseObserver.onCompleted();
+        System.out.println("Done fibonacci");
     }
 
     @Override
-    public void greeting(Nothing request, StreamObserver<Nothing> responseObserver) {
-        System.out.println("called greeting");
+    public void fibonacciServerCrash(Nothing request, StreamObserver<MyNumber> responseObserver) {
+        System.out.println("called fibonacciServerCrash");
+        for (int i = 0; i < 10; ++i) {
+            System.exit(0);
+        }
+        responseObserver.onCompleted();
+        System.out.println("Done fibonacci");
+    }
+
+    @Override
+    public void waitSomeTime(Nothing request, StreamObserver<Nothing> responseObserver) {
+        System.out.println("called waitSomeTime");
+
+        ServerCallStreamObserver scso = ((ServerCallStreamObserver<Nothing>) responseObserver);
+
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() - start < 1000 && !scso.isCancelled());
+
         responseObserver.onNext(Nothing.getDefaultInstance());
+        System.out.println("waitSomeTime Over");
         responseObserver.onCompleted();
     }
 
