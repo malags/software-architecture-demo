@@ -15,11 +15,22 @@ message MyNumbers {
 message Nothing{}
 
 service CalculatorService {
+  //Unary
   rpc add(MyNumbers) returns (MyNumber);
 
+  //Server Streaming
   rpc fibonacci(Nothing) returns (stream MyNumber);
 
+  //Client Streaming
+  rpc sumAll(stream MyNumber) returns (MyNumber);
+
+  //Bidirectional Streaming
+  rpc backAndForth(stream MyNumber) returns (stream MyNumber);
+
+  //Server crash
   rpc fibonacciServerCrash(Nothing) returns (stream MyNumber);
 
+
+  //Sync/Async
   rpc waitSomeTime(Nothing) returns (Nothing);
 }

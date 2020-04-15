@@ -42,6 +42,54 @@ public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServi
     }
 
     @Override
+    public StreamObserver<MyNumber> sumAll(final StreamObserver<MyNumber> responseObserver) {
+        StreamObserver<MyNumber> streamObserver = new StreamObserver<MyNumber>() {
+            int sum = 0;
+            @Override
+            public void onNext(MyNumber myNumber) {
+                sum += myNumber.getNumber();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onCompleted() {
+                responseObserver.onNext(MyNumber.newBuilder().setNumber(sum).build());
+                responseObserver.onCompleted();
+                System.out.println("Completed sumAll");
+            }
+        };
+        return streamObserver;
+    }
+
+    @Override
+    public StreamObserver<MyNumber> backAndForth(final StreamObserver<MyNumber> responseObserver) {
+        StreamObserver streamObserver = new StreamObserver() {
+            @Override
+            public void onNext(Object o) {
+                MyNumber myNumber = (MyNumber) o;
+                System.out.println("backAndForth received "+myNumber);
+                responseObserver.onNext(MyNumber.newBuilder().setNumber(myNumber.getNumber()).build());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("backAndForth Completed");
+                responseObserver.onCompleted();
+            }
+        };
+        return streamObserver;
+    }
+
+    @Override
     public void fibonacciServerCrash(Nothing request, StreamObserver<MyNumber> responseObserver) {
         System.out.println("called fibonacciServerCrash");
         for (int i = 0; i < 10; ++i) {
@@ -66,7 +114,7 @@ public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServi
     }
 
     class Fibonacci {
-        int n1 = 0, n2 = 1, n3;
+        int n1 = 0, n2 = 1, n3 = 0;
 
         int next(){
             int ret = n1;
