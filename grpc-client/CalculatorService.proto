@@ -30,6 +30,7 @@ service CalculatorService {
   //Server crash
   rpc fibonacciServerCrash(Nothing) returns (stream MyNumber);
 
+  rpc notOnServer(Nothing) returns (Nothing);
 
   //Sync/Async
   rpc waitSomeTime(Nothing) returns (Nothing);

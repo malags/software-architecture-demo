@@ -20,6 +20,14 @@ client.add({"numbers" : [
   console.log("\nadd 1 2 = "+JSON.stringify(response))
 })
 
+console.log("call notOnServer")
+client.notOnServer({},(err,response) => {
+  if (err)
+    console.log(err)
+  else
+    console.log("notOnServer"+JSON.stringify(response))
+})
+
 
 
 //Server streaming
